@@ -1,0 +1,5 @@
+#!pip install -r
+colorama
+argparse-color-formatter
+texttable
+web.py>=0.37
