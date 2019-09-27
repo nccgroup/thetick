@@ -1,7 +1,14 @@
 # The Tick
 
 A simple embedded Linux backdoor.
-![Screenshot 1](doc/screenshot-big.png "Screenshot")
+
+- [The Tick](#the-tick)
+  * [Compiling](#compiling)
+  * [Installing](#installing)
+  * [Usage](#usage)
+  * [Media](#media)
+
+![Screenshot 1](doc/screenshot-big.png "Example usage")
 
 ## Compiling
 
@@ -86,11 +93,9 @@ The console will let you know when a new bot connects to it. Use the "bots" comm
 
 Here are a few screenshots illustrating what the console is capable of:
 
-Command line switches
-![Screenshot 2](doc/screenshot-banners.png "Screenshot")
+![Screenshot 2](doc/screenshot-banners.png "Command line switches")
 
-Interactive console help
-![Screenshot 3](doc/screenshot-help.png "Screenshot")
+![Screenshot 3](doc/screenshot-help.png "Interactive console help")
 
 ## Media
 
