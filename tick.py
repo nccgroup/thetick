@@ -10,6 +10,7 @@ http://www.github.com/nccgroup/thetick
 
 See the LICENSE file for further details.
 """
+from __future__ import print_function
 
 ##############################################################################
 # Imports and other module initialization.
@@ -62,24 +63,24 @@ try:
         init()
 
 except ImportError:
-    print "Missing dependency: colorama"
-    print "  pip install colorama"
+    print("Missing dependency: colorama")
+    print("  pip install colorama")
     exit(1)
 
 # Adds support for colors to argparse. Very important, yes!
 try:
     from argparse_color_formatter import ColorHelpFormatter
 except ImportError:
-    print "Missing dependency: " + Style.BRIGHT + Fore.RED + "argparse_color_formatter" + Style.RESET_ALL
-    print Style.BRIGHT + Fore.BLUE + "  pip install argparse-color-formatter" + Style.RESET_ALL
+    print("Missing dependency: " + Style.BRIGHT + Fore.RED + "argparse_color_formatter" + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.BLUE + "  pip install argparse-color-formatter" + Style.RESET_ALL)
     exit(1)
 
 # ASCII art tables. Of course we need this, why do you ask?
 try:
     from texttable import Texttable
 except ImportError:
-    print "Missing dependency: "+ Style.BRIGHT + Fore.RED + "texttable" + Style.RESET_ALL
-    print Style.BRIGHT + Fore.BLUE + "  pip install texttable" + Style.RESET_ALL
+    print("Missing dependency: "+ Style.BRIGHT + Fore.RED + "texttable" + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.BLUE + "  pip install texttable" + Style.RESET_ALL)
     exit(1)
 
 # Yeah it's not pythonic to use asserts like that,
@@ -88,12 +89,12 @@ except ImportError:
 # breaks too many things anyway, so let's prevent that too.
 try:
     assert False
-    print "Running with assertions disabled is a " + Style.BRIGHT + Fore.RED + "TERRIBLE IDEA" + Style.RESET_ALL,
+    print("Running with assertions disabled is a " + Style.BRIGHT + Fore.RED + "TERRIBLE IDEA" + Style.RESET_ALL, end=' ')
     if ANSI_ENABLED:
-        print " \xf0\x9f\x98\xa0"   # angry face emoji
+        print(" \xf0\x9f\x98\xa0")   # angry face emoji
     else:
-        print
-    print "Please don't do that ever again..."
+        print()
+    print("Please don't do that ever again...")
     exit(1)
 except AssertionError:
     pass
@@ -587,7 +588,7 @@ def bot_action(method):
             except:
                 pass
             raise BotError("disconnected")
-        except BotError, e:
+        except BotError as e:
             if str(e) == "disconnected":
                 self.alive = False
             raise
@@ -1298,7 +1299,7 @@ class Console(Cmd):
 
             # If we have queued notifications, show them now.
             while self.notifications:
-                print self.notifications.pop(0)
+                print(self.notifications.pop(0))
 
             # Set the flag to indicate we're blocked at the prompt.
             self.inside_prompt = True
@@ -1419,7 +1420,7 @@ class Console(Cmd):
             for cmd in commands:
                 Cmd.do_help(self, cmd)
                 if index < last:
-                    print Fore.RED + Style.BRIGHT + ("-" * 79) + Style.RESET_ALL
+                    print(Fore.RED + Style.BRIGHT + ("-" * 79) + Style.RESET_ALL)
                 index += 1
 
     def do_exit(self, line):
@@ -1455,7 +1456,7 @@ class Console(Cmd):
         if not ANSI_ENABLED:
             deinit()
             init()
-        print "\033[2J\033[1;1f"
+        print("\033[2J\033[1;1f")
         if not ANSI_ENABLED:
             deinit()
             init(wrap = True, strip = True)
@@ -1474,7 +1475,7 @@ class Console(Cmd):
 
         # If we have no connected bots, just show an error message.
         if not self.listener.bots:
-            print Fore.YELLOW + "No bots have connected yet" + Style.RESET_ALL
+            print(Fore.YELLOW + "No bots have connected yet" + Style.RESET_ALL)
             return
 
         # We will show the list of bots in an ASCII art table.
@@ -1509,9 +1510,9 @@ class Console(Cmd):
         text = text.replace("\x02", " " + Fore.BLUE + Style.BRIGHT)
         text = text.replace("\x03", " " + Fore.GREEN + Style.BRIGHT)
         text = text.replace("\x04", Style.RESET_ALL + " ")
-        print
-        print text
-        print
+        print()
+        print(text)
+        print()
 
     def do_current(self, line):
         """
@@ -1527,7 +1528,7 @@ class Console(Cmd):
 
         # If no bot is selected, show a simple message.
         if self.current is None:
-            print Fore.YELLOW + "No bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "No bot selected" + Style.RESET_ALL)
             return
 
         # Show the details of the currently selected bot.
@@ -1535,12 +1536,12 @@ class Console(Cmd):
         addr = bot.from_addr[0]
         uuid = bot.uuid
         index = self.listener.bots.keys().index(uuid)
-        print (
+        print((
             "\n" +
             "Bot number: #%d\n" +
             "IP address: %s\n" +
             "UUID: [" + Fore.BLUE + Style.BRIGHT + "%s" + Style.RESET_ALL + "]\n"
-        ) % (index, addr, uuid)
+        ) % (index, addr, uuid))
 
     def do_use(self, line):
         """
@@ -1575,7 +1576,7 @@ class Console(Cmd):
                 try:
                     bot = self.listener.bots.values()[ int(bot_id) ]
                 except IndexError:
-                    print Fore.YELLOW + ("Error: no bot number %d found" % int(bot_id)) + Style.RESET_ALL
+                    print(Fore.YELLOW + ("Error: no bot number %d found" % int(bot_id)) + Style.RESET_ALL)
                     return
                 except ValueError:
 
@@ -1596,17 +1597,17 @@ class Console(Cmd):
                             break
                         index = index + 1
                     if not found:
-                        print Fore.YELLOW + ("Error: no bot connected to IP address %s" % bot_id) + Style.RESET_ALL
+                        print(Fore.YELLOW + ("Error: no bot connected to IP address %s" % bot_id) + Style.RESET_ALL)
                         return
 
             # The bot must not be busy.
             if self.is_bot_busy(bot):
-                print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+                print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
                 return
 
             # The bot must be alive.
             if not bot.alive:
-                print Fore.YELLOW + "Bot is disconnected" + Style.RESET_ALL
+                print(Fore.YELLOW + "Bot is disconnected" + Style.RESET_ALL)
                 return
 
             # Select the bot.
@@ -1620,12 +1621,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1646,12 +1647,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1672,12 +1673,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1698,12 +1699,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1725,12 +1726,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Perform the operation.
@@ -1742,7 +1743,7 @@ class Console(Cmd):
             output += "\n" + Fore.RED + Style.BRIGHT + "<output truncated>" + Style.RESET_ALL
 
         # Print the output from the command to screen.
-        print output
+        print(output)
 
     def do_download(self, line):
         """
@@ -1753,12 +1754,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1782,12 +1783,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1809,12 +1810,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1832,12 +1833,12 @@ class Console(Cmd):
         # When Control+C is hit, return to the interpreter.
         sock = self.current.system_shell()
         sleep(0.1)      # wait for the reconnection
-        print Fore.YELLOW + "/-------------------------------------------------\\" + Style.RESET_ALL
-        print Fore.YELLOW + "| Entering remote shell. Use " + Style.BRIGHT + "Control+C" + Style.NORMAL + " to return. |" + Style.RESET_ALL
-        print Fore.YELLOW + "\\-------------------------------------------------/" + Style.RESET_ALL
+        print(Fore.YELLOW + "/-------------------------------------------------\\" + Style.RESET_ALL)
+        print(Fore.YELLOW + "| Entering remote shell. Use " + Style.BRIGHT + "Control+C" + Style.NORMAL + " to return. |" + Style.RESET_ALL)
+        print(Fore.YELLOW + "\\-------------------------------------------------/" + Style.RESET_ALL)
         shell = RemoteShell(sock)
         shell.run_parent()
-        print
+        print()
 
         # Try to re-select the same bot when exiting the shell.
         # We need to do this because the shell command reuses the C&C socket,
@@ -1853,12 +1854,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -1874,7 +1875,7 @@ class Console(Cmd):
 
         # Show the results.
         for addr in answer:
-            print addr
+            print(addr)
 
     def do_pivot(self, line):
         """
@@ -1886,12 +1887,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Make sure the bot is still alive.
@@ -1918,7 +1919,7 @@ class Console(Cmd):
         listen_sock = socket()
         listen_sock.bind( ("127.0.0.1", listen) )
         listen_sock.listen(1)
-        print "Connect to port %d now..." % listen
+        print("Connect to port %d now..." % listen)
         accept_sock = listen_sock.accept()[0]
         try:
 
@@ -2077,17 +2078,17 @@ class Console(Cmd):
 
             # A bot must be selected.
             if self.current is None:
-                print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+                print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
                 return
 
             # The bot must not be busy.
             if self.is_bot_busy():
-                print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+                print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
                 return
 
             # The port must be free.
             if port in self.proxies:
-                print Fore.YELLOW + "Error: port is already in use" + Style.RESET_ALL
+                print(Fore.YELLOW + "Error: port is already in use" + Style.RESET_ALL)
                 return
 
             # Automatically fork the bot so we can keep using it.
@@ -2112,7 +2113,7 @@ class Console(Cmd):
 
             # If there is no proxy at that port, complain.
             if port not in self.proxies:
-                print Fore.YELLOW + ("No proxy on port %d" % port) + Style.RESET_ALL
+                print(Fore.YELLOW + ("No proxy on port %d" % port) + Style.RESET_ALL)
                 return
 
             # Remove the proxy from the dictionary and kill it.
@@ -2123,8 +2124,8 @@ class Console(Cmd):
 
             # If we had no active proxies, just show an error message.
             if not self.proxies:
-                print Fore.YELLOW + "No active proxies right now" + Style.RESET_ALL
-                print "(Use 'help proxy' to show the help)"
+                print(Fore.YELLOW + "No active proxies right now" + Style.RESET_ALL)
+                print("(Use 'help proxy' to show the help)")
                 return
 
             # We will show the list of proxies in an ASCII art table.
@@ -2155,9 +2156,9 @@ class Console(Cmd):
             text = text.replace("\x02", " " + Fore.BLUE + Style.BRIGHT)
             text = text.replace("\x03", " " + Fore.GREEN + Style.BRIGHT)
             text = text.replace("\x04", Style.RESET_ALL + " ")
-            print
-            print text
-            print
+            print()
+            print(text)
+            print()
 
         # Should never reach here.
         else:
@@ -2172,12 +2173,12 @@ class Console(Cmd):
 
         # A bot must be selected.
         if self.current is None:
-            print Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL
+            print(Fore.YELLOW + "Error: no bot selected" + Style.RESET_ALL)
             return
 
         # The bot must not be busy.
         if self.is_bot_busy():
-            print Fore.YELLOW + "Bot is busy" + Style.RESET_ALL
+            print(Fore.YELLOW + "Bot is busy" + Style.RESET_ALL)
             return
 
         # Parse the arguments, on error show help.
@@ -2248,12 +2249,12 @@ def main(args = None):
                 break
 
             # Show bot errors in a pretty way.
-            except BotError, e:
-                print Fore.RED + Style.BRIGHT + str(e) + Style.RESET_ALL
+            except BotError as e:
+                print(Fore.RED + Style.BRIGHT + str(e) + Style.RESET_ALL)
 
             # Quit silently with Control+C.
             except KeyboardInterrupt:
-                print
+                print()
                 break
 
             # Show all other exceptions as Python tracebacks.
