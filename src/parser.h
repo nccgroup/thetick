@@ -14,6 +14,11 @@
 #include <sys/types.h>
 #include <stdint.h>
 
+//  fix compiling on OSX
+#if defined(__APPLE__)
+    #define MSG_NOSIGNAL 0
+#endif 
+
 // Base command IDs per category.
 #define BASE_CMD_SYSTEM         0x0000
 #define BASE_CMD_FILE           0x0100
