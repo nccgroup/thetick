@@ -760,7 +760,7 @@ class RemoteShell(Thread):
                 pass
 
     # This method is invoked from the main thread.
-    # It forwards everying from standard input to the remote shell.
+    # It forwards everything from standard input to the remote shell.
     # It launches the background thread and kills it before returning.
     # Control+C is caught within this function, which causes the
     # remote shell to be stopped without killing the console.
